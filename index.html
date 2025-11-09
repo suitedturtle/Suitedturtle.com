@@ -4,32 +4,491 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nova Cinematic</title>
-  <meta name="description" content="Nova Cinematic – AI that turns ideas into cinematic short-form videos and automates TikTok uploads." />
+  <meta name="description" content="Nova Cinematic helps creators turn prompts into polished TikTok videos with a verified automation stack." />
   <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0b0d10;color:#e8eaed}
-    .wrap{max-width:820px;margin:0 auto;padding:56px 20px}
-    h1{font-size:40px;margin:0 0 10px}
-    p{line-height:1.6}
-    .card{background:#13161a;border:1px solid #1f2328;border-radius:14px;padding:18px 18px 6px;margin:18px 0}
-    a{color:#8ab4ff;text-decoration:none} a:hover{text-decoration:underline}
-    .btn{display:inline-block;margin-top:14px;padding:10px 14px;border-radius:10px;background:#1a73e8;color:white}
+    :root {
+      color-scheme: dark;
+      --bg: radial-gradient(circle at top, #0b0e1a 0%, #04060c 55%, #030408 100%);
+      --surface: rgba(16, 21, 35, 0.86);
+      --surface-soft: rgba(13, 17, 28, 0.75);
+      --border: rgba(120, 138, 255, 0.24);
+      --border-strong: rgba(120, 138, 255, 0.36);
+      --text: #f5f7ff;
+      --muted: #aab4d7;
+      --accent: #7ea6ff;
+      --accent-strong: #4d7fff;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+    }
+
+    main {
+      width: min(1100px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 48px 0 100px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .wordmark {
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      font-size: 18px;
+      text-transform: uppercase;
+      color: rgba(196, 204, 240, 0.86);
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    nav a:hover,
+    nav a:focus-visible {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus-visible {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background: linear-gradient(140deg, rgba(38, 53, 98, 0.72), rgba(10, 13, 23, 0.92));
+      border-radius: 28px;
+      border: 1px solid var(--border-strong);
+      padding: clamp(28px, 6vw, 48px);
+      display: grid;
+      gap: 28px;
+      box-shadow: 0 28px 70px rgba(5, 8, 16, 0.55);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(40px, 5.8vw, 70px);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      border: 1px solid transparent;
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #04060c;
+      box-shadow: 0 12px 28px rgba(78, 124, 255, 0.4);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(78, 124, 255, 0.48);
+    }
+
+    .btn-secondary {
+      background: var(--surface-soft);
+      color: var(--text);
+      border-color: rgba(124, 150, 240, 0.4);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      border-color: rgba(126, 166, 255, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .hero-highlights {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .hero-highlights li {
+      background: var(--surface-soft);
+      border: 1px solid rgba(112, 136, 220, 0.24);
+      border-radius: 18px;
+      padding: 18px 20px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .hero-highlights strong {
+      display: block;
+      color: var(--text);
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    section {
+      margin: 78px 0;
+    }
+
+    section h2 {
+      margin: 0 0 18px;
+      font-size: 32px;
+    }
+
+    p.lead {
+      margin: 0 0 28px;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border-radius: 22px;
+      padding: 24px;
+      border: 1px solid rgba(108, 132, 218, 0.26);
+      display: grid;
+      gap: 14px;
+    }
+
+    .feature-card h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .feature-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .timeline {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 18px;
+      counter-reset: step;
+    }
+
+    .timeline li {
+      position: relative;
+      background: var(--surface);
+      border-radius: 18px;
+      padding: 20px 20px 20px 56px;
+      border: 1px solid rgba(118, 144, 232, 0.26);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .timeline li::before {
+      content: counter(step, decimal-leading-zero);
+      counter-increment: step;
+      position: absolute;
+      left: 20px;
+      top: 22px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(204, 214, 255, 0.8);
+    }
+
+    .timeline li strong {
+      display: block;
+      color: var(--text);
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .pill-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .pill {
+      background: var(--surface);
+      border-radius: 20px;
+      border: 1px solid rgba(118, 144, 232, 0.24);
+      padding: 22px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    .pill strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .callout {
+      border-radius: 24px;
+      border: 1px solid rgba(120, 138, 255, 0.3);
+      background: linear-gradient(135deg, rgba(54, 74, 136, 0.38), rgba(10, 13, 23, 0.9));
+      padding: 44px clamp(24px, 6vw, 52px);
+      text-align: center;
+    }
+
+    .callout p {
+      color: var(--muted);
+      margin: 0 auto 26px;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    footer {
+      margin-top: 72px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(92, 108, 176, 0.3);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      color: rgba(173, 182, 210, 0.75);
+      font-size: 14px;
+      justify-content: space-between;
+    }
+
+    footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    footer a:hover,
+    footer a:focus-visible {
+      color: var(--accent);
+    }
+
+    @media (max-width: 720px) {
+      .timeline li {
+        padding-left: 48px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav {
+        gap: 12px 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <h1>Nova Cinematic</h1>
-    <p>AI that turns ideas into cinematic short-form videos and automates TikTok uploads (drafts or publish, with permission).</p>
+  <main>
+    <header>
+      <div class="wordmark">Nova Cinematic</div>
+      <nav>
+        <a href="#workflow">Workflow</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#automation">Automation</a>
+        <a href="#trust">Trust</a>
+        <a href="terms.html">Legal</a>
+      </nav>
+    </header>
 
-    <div class="card">
-      <h2>About</h2>
-      <p>Nova coordinates biomechanics, lighting, sound, emotion, and world-building agents to craft realistic, high-impact visuals. This site provides a simple public landing plus transparent legal pages required for TikTok Developer review.</p>
-      <p><a class="btn" href="terms.html">Terms of Service</a> <a class="btn" href="privacy.html" style="background:#2a7b3f">Privacy Policy</a></p>
-    </div>
+    <section class="hero" id="top">
+      <div>
+        <h1>Direct once. Nova handles the cinematic TikTok run.</h1>
+        <p>Nova Cinematic pairs story design, biomechanical motion, lighting, sound, and TikTok delivery into one automation stack. Generate short-form films with studio polish and push them live without leaving your creative flow.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="mailto:support@novacinematic.com">Request creator access</a>
+        <a class="btn btn-secondary" href="#pipeline">See the pipeline</a>
+      </div>
+      <ul class="hero-highlights">
+        <li><strong>45 sec</strong> average prompt-to-playblast turnarounds with human review lanes.</li>
+        <li><strong>TikTok ready</strong> Content Posting API with draft, publish, and scheduling controls.</li>
+        <li><strong>Guardrails</strong> Policy, brand safety, and rollback tooling built in.</li>
+      </ul>
+    </section>
 
-    <div class="card">
-      <h2>Contact</h2>
-      <p>Email: support@novacinematic.com</p>
-    </div>
+    <section id="workflow">
+      <h2>Everything your short-form studio needs</h2>
+      <p class="lead">Nova orchestrates a specialised agent roster so you can focus on direction while the platform manages execution and compliance.</p>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <h3>Storycraft Engine</h3>
+          <p>Turn prompts into shot-ready beat sheets, scripts, and caption drafts tuned for short-form retention.</p>
+          <ul>
+            <li>Beat pacing, dialog, and emotional cues</li>
+            <li>Reference pull sheets for wardrobe and sets</li>
+            <li>Caption suggestions with hashtag strategy</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>Biomech Motion Lab</h3>
+          <p>Pose-to-performance generation keeps characters believable while adapting to your lensing choices.</p>
+          <ul>
+            <li>Camera-blocking aligned to story beats</li>
+            <li>Adaptive retargeting across avatars</li>
+            <li>Viewport previews for quick approvals</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>Spectral Lighting Suite</h3>
+          <p>Intelligent lighting and lookdev map cinematic mood to TikTok’s dynamic range envelope.</p>
+          <ul>
+            <li>Key, fill, and rim balancing per scene</li>
+            <li>Automated highlight protection</li>
+            <li>Color pipeline for HDR and SDR cuts</li>
+          </ul>
+        </article>
+        <article class="feature-card">
+          <h3>Sound & Finish</h3>
+          <p>Automated scoring, foley, and finishing passes deliver platform-optimized masters.</p>
+          <ul>
+            <li>Voice performance with direction notes</li>
+            <li>Audio leveling for mobile-first playback</li>
+            <li>9:16 masters and archive-ready exports</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="pipeline">
+      <h2>Pipeline with checkpoints</h2>
+      <p class="lead">Each request moves through transparent stages. You can pause for human review at any step or let Nova ship automatically.</p>
+      <ol class="timeline">
+        <li><strong>Intent intake</strong>Upload prompts, scripts, or reference clips. Nova validates policy alignment and generates production briefs.</li>
+        <li><strong>Previsualization</strong>Storyboard, blocking, and motion rehearsals render instantly so you can annotate before finalizing.</li>
+        <li><strong>Look & lighting</strong>Lighting, materials, and VFX are tuned to your creative notes and to TikTok’s technical guardrails.</li>
+        <li><strong>Final render</strong>Multi-pass rendering creates 4K HDR masters plus TikTok-ready encodes with captions baked or separate.</li>
+        <li><strong>TikTok delivery</strong>Publish straight to TikTok via the Content Posting API with options for draft handoff, scheduling, or instant go-live.</li>
+      </ol>
+    </section>
+
+    <section id="automation">
+      <h2>Automation with control knobs</h2>
+      <p class="lead">Nova’s verified TikTok integration lets you automate distribution while keeping approvals and compliance transparent.</p>
+      <div class="pill-grid">
+        <div class="pill">
+          <strong>OAuth you can trust</strong>
+          Secure login through TikTok Login Kit with immediate revocation support and callback visibility for debugging.
+        </div>
+        <div class="pill">
+          <strong>Publishing modes</strong>
+          Choose between draft delivery, scheduled release windows, or instant publish with explicit confirmation on each run.
+        </div>
+        <div class="pill">
+          <strong>Audit-ready logs</strong>
+          Every action records timestamped signatures, reviewer notes, and the payload Nova submitted on your behalf.
+        </div>
+      </div>
+    </section>
+
+    <section id="trust">
+      <h2>Operational transparency</h2>
+      <p class="lead">Safety, privacy, and human support are embedded so you can scale production without risking the channel.</p>
+      <div class="pill-grid">
+        <div class="pill">
+          <strong>Verified domain</strong>
+          novacinematic.com is TikTok verified to streamline OAuth review and keep redirects scoped to a trusted host.
+        </div>
+        <div class="pill">
+          <strong>Data stewardship</strong>
+          Clear <a href="privacy.html">Privacy Policy</a> and <a href="terms.html">Terms of Service</a> outline how creator data is processed and stored.
+        </div>
+        <div class="pill">
+          <strong>Creator support</strong>
+          Dedicated support engineers review render feedback, policy flags, and API incidents with 24-hour response targets.
+        </div>
+      </div>
+    </section>
+
+    <section class="callout">
+      <h2>Bring Nova Cinematic into your TikTok workflow</h2>
+      <p>We onboard a limited cohort of studios and creators each month to maintain render availability. Reach out and we’ll tailor a walkthrough to your pipeline.</p>
+      <div class="hero-actions" style="justify-content:center;">
+        <a class="btn btn-primary" href="mailto:support@novacinematic.com">Book a session</a>
+        <a class="btn btn-secondary" href="callback.html">View OAuth callback</a>
+      </div>
+    </section>
+
+    <footer>
+      <span>© <script>document.write(new Date().getFullYear());</script> Nova Cinematic</span>
+      <span>Contact: <a href="mailto:support@novacinematic.com">support@novacinematic.com</a></span>
+      <span><a href="terms.html">Terms</a> · <a href="privacy.html">Privacy</a></span>
+    </footer>
   </main>
 </body>
 </html>
