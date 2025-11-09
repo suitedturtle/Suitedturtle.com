@@ -2,12 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OAuth Callback — Nova Cinematic</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --bg: radial-gradient(circle at top, #0b0e1a 0%, #04060c 55%, #030408 100%);
+      --surface: rgba(16, 21, 35, 0.88);
+      --border: rgba(120, 138, 255, 0.32);
+      --text: #f5f7ff;
+      --muted: #aab4d7;
+      --accent: #7ea6ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    main {
+      width: min(520px, calc(100% - 40px));
+      padding: 32px 36px 40px;
+      background: var(--surface);
+      border-radius: 26px;
+      border: 1px solid var(--border);
+      box-shadow: 0 26px 60px rgba(5, 8, 16, 0.55);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 26px;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    code {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(9, 12, 20, 0.85);
+      border: 1px solid rgba(120, 138, 255, 0.26);
+      color: var(--text);
+      font-size: 14px;
+      overflow-wrap: anywhere;
+      margin: 18px 0 24px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover,
+    a:focus-visible {
+      text-decoration: underline;
+    }
+
+    .meta {
+      margin-top: 24px;
+      font-size: 13px;
+      color: rgba(170, 180, 215, 0.8);
+    }
+  </style>
 </head>
 <body>
-  <h1>OAuth Callback</h1>
-  <p>If you see this, TikTok redirected back successfully.</p>
-  <p><strong>Full URL:</strong> <span id="url"></span></p>
+  <main>
+    <h1>TikTok OAuth callback</h1>
+    <p>Your TikTok login has redirected back to Nova Cinematic. Copy the callback URL below for support or to validate OAuth flows.</p>
+    <code id="url">Loading…</code>
+    <p><a href="index.html">Return to the Nova Cinematic site</a></p>
+    <p class="meta">Need to revoke access? You can disconnect anytime from TikTok settings or by emailing <a href="mailto:support@novacinematic.com">support@novacinematic.com</a>.</p>
+  </main>
   <script>
     document.getElementById("url").textContent = window.location.href;
   </script>
